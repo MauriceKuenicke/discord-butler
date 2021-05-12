@@ -1,0 +1,1 @@
+echo ${GOOGLE_CREDENTIALS} > /cred/client_secret.json
