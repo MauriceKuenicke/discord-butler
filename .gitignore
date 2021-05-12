@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 
 cred/client_secret.json
+*.ipynb
 
 # C extensions
 *.so
