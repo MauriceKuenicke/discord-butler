@@ -19,6 +19,11 @@ def calculate_timedelta(weekday, hour, minute):
     time_goal = datetime.datetime(
         next_date.year, next_date.month, next_date.day, hour, minute, 0, 0)
     delta = time_goal - time_now
+    if delta.total_seconds() < 0:
+        next_date = next_date+datetime.timedelta(7)
+        time_goal = datetime.datetime(
+            next_date.year, next_date.month, next_date.day, hour, minute, 0, 0)
+        delta = time_goal - time_now
     return delta.total_seconds()
 
 

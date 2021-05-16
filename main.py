@@ -37,9 +37,11 @@ async def times(ctx, name="availability"):
 
 @ tasks.loop(hours=168.0)  # 168 hours = 1 week
 async def send_reminder():
+    print("Start reminder.")
     df = google_doc.request_GoogleDocRecords(week="next")
     playerL = google_doc.get_slacking_player(df)
     if len(playerL) > 0:
+        print("List of slacking player: ", playerL)
         # Calculate poossible days without missing player
         available_days, single_block = google_doc.calculate_available_days(
             df.drop([player for player in playerL], axis=1))
@@ -58,11 +60,13 @@ async def send_reminder():
                 await client.get_user(user_id).send("Aktuell wären folgende Termine mit Ihnen möglich: \n" +
                                                     message_string)
     else:
+        print("No slacking player found...")
         pass
 
 
 @ tasks.loop(hours=168.0)  # 168 hours = 1 week
 async def send_weekly_report():
+    print("Start weekly report.")
     df = google_doc.request_GoogleDocRecords(week="next")
     available_days, single_block = google_doc.calculate_available_days(df)
 
@@ -70,6 +74,7 @@ async def send_weekly_report():
         player_single_block = single_block.columns[single_block.isin(
             ['-']).any()].tolist()
         # Message player
+        print("Message player for possible days: ", player_single_block)
         for player in player_single_block:
             message_string = ""
             for date in single_block[single_block[player] == "-"]["Datum"].values:
@@ -103,12 +108,14 @@ async def send_weekly_report():
             await user.send("\n\nWie Sie sehen können, sieht es mit verfügbaren Tagen sehr schlecht aus. Ich habe allerdings schon folgende Spieler über mögliche Termine benachrichtigt, da an diesen nur jeweils ein Spieler fehlt:\n\n" +
                             message_string_player_informed +
                             "\nDie weitere Planung überlasse ich Ihnen und verabschiede mich nun in den Feierabend für diese Woche!")
+    print("Report summary sent.")
 
 
 @ send_weekly_report.before_loop
 async def before_weekly():
     await client.wait_until_ready()
-    delta = utils.calculate_timedelta(6, 12, 0)   # Sunday 18:00 -> (6, 18, 0)
+    # Sunday 18:00 -> (6, 16, 0) 2h delay
+    delta = utils.calculate_timedelta(6, 10, 0)
     print(f"Starting weekly report cycle in {delta} seconds.")
     await asyncio.sleep(delta)
     print("Starting weekly report cycle.")
@@ -117,7 +124,7 @@ async def before_weekly():
 @ send_reminder.before_loop
 async def before_reminder():
     await client.wait_until_ready()
-    delta = utils.calculate_timedelta(5, 12, 0)
+    delta = utils.calculate_timedelta(5, 10, 0)
     print(f"Starting reminder cycle in {delta} seconds.")
     await asyncio.sleep(delta)
     print("Starting reminder cycle.")
