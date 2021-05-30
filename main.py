@@ -86,7 +86,7 @@ async def send_weekly_report():
             user_id = utils.get_userID_by_name(player)
             username = str(client.get_user(user_id)).split("#")[0]
             user = client.get_user(user_id)
-            await user.send(f"Guten Abend {username}! Leider muss ich Ihnen mitteilen, dass es sehr schlecht aussieht, was die Raidtage nächste Woche betrifft. Allerdings musste ich feststellen, dass Sie zu folgenden Terminen als einzige Person keine Zeit haben:\n\n" +
+            await user.send(f"Guten Tag {username}! Leider muss ich Ihnen mitteilen, dass es sehr schlecht aussieht, was die Raidtage nächste Woche betrifft. Allerdings musste ich feststellen, dass Sie zu folgenden Terminen als einzige Person keine Zeit haben:\n\n" +
                             message_string + "\nVielleicht können Sie uns doch an einem dieser Tage mit Ihrer Anwesenheit beglücken. Falls das der Fall sein sollte, würde ich Sie bitten dies in Form einer Zeitangabe im Kalender bis spätestens 20Uhr am heutigen Tag zu vermerken.")
 
     # Create and send message
@@ -97,7 +97,7 @@ async def send_weekly_report():
     for user_id in [utils.get_userID_by_name("Dimi"), utils.get_userID_by_name("Mira")]:
         username = str(client.get_user(user_id)).split("#")[0]
         user = client.get_user(user_id)
-        await user.send(f"Guten Abend {username}! Hier finden Sie die aktuelle Übersicht der eingetragenen Zeiten für die kommende Woche:")
+        await user.send(f"Guten Tag {username}! Hier finden Sie die aktuelle Übersicht der eingetragenen Zeiten für die kommende Woche:")
         await user.send(embed=embed)
         await user.send("Ich habe mir die Freiheit genommen und Ihnen bereits die möglichen Raidtage herausgesucht. Aktuell stehen folgende Optionen zur Verfügung:\n\n" +
                         message_string)
@@ -115,7 +115,7 @@ async def send_weekly_report():
 async def before_weekly():
     await client.wait_until_ready()
     # Sunday 18:00 -> (6, 16, 0) 2h delay
-    delta = utils.calculate_timedelta(6, 10, 0)
+    delta = utils.calculate_timedelta(6, 10, 40)
     print(f"Starting weekly report cycle in {delta} seconds.")
     await asyncio.sleep(delta)
     print("Starting weekly report cycle.")

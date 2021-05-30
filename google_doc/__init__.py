@@ -88,6 +88,8 @@ def get_start_time(x):
         if start.strip() == "?" or start == "":
             return 10
         else:
+            if len(start.strip().split(":")) == 2:
+                return float(start.strip().split(":")[0]) + 0.5
             return int(start)
 
 
@@ -101,6 +103,8 @@ def get_end_time(x):
         if end.strip() == "?" or end == "":
             return 24
         else:
+            if len(end.strip().split(":")) == 2:
+                return float(end.strip().split(":")[0]) + 0.5
             return int(end)
 
 
