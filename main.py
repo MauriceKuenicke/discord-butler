@@ -115,7 +115,7 @@ async def send_weekly_report():
 async def before_weekly():
     await client.wait_until_ready()
     # Sunday 18:00 -> (6, 16, 0) 2h delay
-    delta = utils.calculate_timedelta(6, 10, 40)
+    delta = utils.calculate_timedelta(6, 10, 00)
     print(f"Starting weekly report cycle in {delta} seconds.")
     await asyncio.sleep(delta)
     print("Starting weekly report cycle.")
